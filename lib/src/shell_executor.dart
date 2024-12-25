@@ -9,8 +9,15 @@ Future<ProcessResult> $(
   String? workingDirectory,
   Map<String, String>? environment,
 }) async {
-  stdout.writeln('\n${DateTime.now()}'.green());
-  stdout.writeln('> $executable ${arguments.join(' ')}');
+  void printPrompt() async {
+    final now = DateTime.now();
+    final time = '${now.hour}:${now.minute}:${now.second}';
+    final dir = workingDirectory ?? Directory.current.path;
+    stdout.writeln('\n[$time] $dir'.green());
+    stdout.writeln('> $executable ${arguments.join(' ')}');
+  }
+
+  printPrompt();
   final result = await ShellExecutor.global.exec(
     executable,
     arguments,
